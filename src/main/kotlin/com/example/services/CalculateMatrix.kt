@@ -15,17 +15,17 @@ import kotlin.random.Random
 
 class CalculateMatrixClass {
 
-    suspend fun getMatrixMultiplication() = coroutineScope {
+    suspend fun getMatrixMultiplication() = withContext(Dispatchers.IO) {
         val client = HttpClient(CIO)
         var rpm = 0
         val startTime = System.currentTimeMillis()
         val totalMinutes = 1
-        val endTime = startTime + ((totalMinutes * 15) * 1000)
+        val endTime = startTime + ((totalMinutes * 10) * 1000)
 
         val listOfResponse = mutableListOf<Deferred<String>>()
         val responseTime  =  mutableListOf<Long>()
-//        while (System.currentTimeMillis() < endTime) {
-        repeat(10000) {
+        //while (System.currentTimeMillis() < endTime) {
+        repeat(100000) {
             val random = Random.nextInt(1, 5)
             val requestBody = """{"rows": $random,
             "columns":$random
@@ -41,7 +41,7 @@ class CalculateMatrixClass {
         }
         println("bingo ,, im here boii")
 
-           // val res = listOfResponse.awaitAll()
+          //  listOfResponse.awaitAll()
             responseTime.sort()
         println(responseTime)
         val index = (responseTime.size * 0.99).toInt()
